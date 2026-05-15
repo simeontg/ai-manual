@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Outlet, createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
@@ -93,9 +93,14 @@ function HostLandingPage() {
       </div>
       <div className="mt-10 flex gap-3">
         {isHost ? (
-          <Button asChild size="lg">
-            <Link to="/dashboard">Open dashboard</Link>
-          </Button>
+          <>
+            <Button asChild size="lg">
+              <Link to="/dashboard">Open dashboard</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/host/analytics">View analytics</Link>
+            </Button>
+          </>
         ) : (
           <Button size="lg" onClick={becomeHost}>
             {user ? "Become a host" : "Sign up to host"}
@@ -186,6 +191,7 @@ function HostLandingPage() {
           </div>
         </section>
       )}
+      <Outlet />
     </div>
   );
 }

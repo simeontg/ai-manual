@@ -20,6 +20,7 @@ import { Route as MyTicketsRouteImport } from './routes/my.tickets'
 import { Route as MyEventsRouteImport } from './routes/my.events'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as HostsHostIdRouteImport } from './routes/hosts.$hostId'
+import { Route as HostAnalyticsRouteImport } from './routes/host.analytics'
 import { Route as EventsNewRouteImport } from './routes/events.new'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
 import { Route as AuthSignUpRouteImport } from './routes/auth.sign-up'
@@ -81,6 +82,11 @@ const HostsHostIdRoute = HostsHostIdRouteImport.update({
   path: '/hosts/$hostId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HostAnalyticsRoute = HostAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => HostRoute,
+} as any)
 const EventsNewRoute = EventsNewRouteImport.update({
   id: '/events/new',
   path: '/events/new',
@@ -112,13 +118,14 @@ export interface FileRoutesByFullPath {
   '/check-in': typeof CheckInRoute
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
-  '/host': typeof HostRoute
+  '/host': typeof HostRouteWithChildren
   '/reports': typeof ReportsRoute
   '/team': typeof TeamRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/events/new': typeof EventsNewRoute
+  '/host/analytics': typeof HostAnalyticsRoute
   '/hosts/$hostId': typeof HostsHostIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/my/events': typeof MyEventsRoute
@@ -130,13 +137,14 @@ export interface FileRoutesByTo {
   '/check-in': typeof CheckInRoute
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
-  '/host': typeof HostRoute
+  '/host': typeof HostRouteWithChildren
   '/reports': typeof ReportsRoute
   '/team': typeof TeamRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/events/new': typeof EventsNewRoute
+  '/host/analytics': typeof HostAnalyticsRoute
   '/hosts/$hostId': typeof HostsHostIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/my/events': typeof MyEventsRoute
@@ -149,13 +157,14 @@ export interface FileRoutesById {
   '/check-in': typeof CheckInRoute
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
-  '/host': typeof HostRoute
+  '/host': typeof HostRouteWithChildren
   '/reports': typeof ReportsRoute
   '/team': typeof TeamRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/events/new': typeof EventsNewRoute
+  '/host/analytics': typeof HostAnalyticsRoute
   '/hosts/$hostId': typeof HostsHostIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/my/events': typeof MyEventsRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/events/$eventId'
     | '/events/new'
+    | '/host/analytics'
     | '/hosts/$hostId'
     | '/invite/$token'
     | '/my/events'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/events/$eventId'
     | '/events/new'
+    | '/host/analytics'
     | '/hosts/$hostId'
     | '/invite/$token'
     | '/my/events'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/events/$eventId'
     | '/events/new'
+    | '/host/analytics'
     | '/hosts/$hostId'
     | '/invite/$token'
     | '/my/events'
@@ -224,7 +236,7 @@ export interface RootRouteChildren {
   CheckInRoute: typeof CheckInRoute
   DashboardRoute: typeof DashboardRoute
   ExploreRoute: typeof ExploreRoute
-  HostRoute: typeof HostRoute
+  HostRoute: typeof HostRouteWithChildren
   ReportsRoute: typeof ReportsRoute
   TeamRoute: typeof TeamRoute
   AuthSignInRoute: typeof AuthSignInRoute
@@ -317,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostsHostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/host/analytics': {
+      id: '/host/analytics'
+      path: '/analytics'
+      fullPath: '/host/analytics'
+      preLoaderRoute: typeof HostAnalyticsRouteImport
+      parentRoute: typeof HostRoute
+    }
     '/events/new': {
       id: '/events/new'
       path: '/events/new'
@@ -355,12 +374,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface HostRouteChildren {
+  HostAnalyticsRoute: typeof HostAnalyticsRoute
+}
+
+const HostRouteChildren: HostRouteChildren = {
+  HostAnalyticsRoute: HostAnalyticsRoute,
+}
+
+const HostRouteWithChildren = HostRoute._addFileChildren(HostRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckInRoute: CheckInRoute,
   DashboardRoute: DashboardRoute,
   ExploreRoute: ExploreRoute,
-  HostRoute: HostRoute,
+  HostRoute: HostRouteWithChildren,
   ReportsRoute: ReportsRoute,
   TeamRoute: TeamRoute,
   AuthSignInRoute: AuthSignInRoute,
