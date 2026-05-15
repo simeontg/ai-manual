@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Download } from "lucide-react";
@@ -48,7 +48,11 @@ function AnalyticsPage() {
       <EmptyState
         title="No events yet"
         description="Create your first event to start seeing analytics."
-        action={{ to: "/events/new", label: "Create event" }}
+        action={
+          <Button asChild>
+            <Link to="/events/new">Create event</Link>
+          </Button>
+        }
       />
     );
   }
