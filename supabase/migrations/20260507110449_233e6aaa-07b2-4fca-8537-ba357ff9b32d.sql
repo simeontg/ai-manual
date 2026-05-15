@@ -1,0 +1,5 @@
+ALTER TABLE public.events
+  ADD COLUMN IF NOT EXISTS time_zone TEXT NOT NULL DEFAULT 'UTC';
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS contact_email TEXT;

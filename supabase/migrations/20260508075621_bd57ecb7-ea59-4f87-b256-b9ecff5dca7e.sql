@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Authenticated can lookup invite by token" ON public.host_invites;
